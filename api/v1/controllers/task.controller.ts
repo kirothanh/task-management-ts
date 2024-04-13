@@ -9,9 +9,9 @@ export const index = async (req: Request, res: Response) => {
   try {
     // Find
     interface Find {
-      deleted: boolean,
-      status?: string,
-      title?: RegExp
+      deleted: boolean;
+      status?: string;
+      title?: RegExp;
     }
 
     const find: Find = {
@@ -87,19 +87,19 @@ export const changeStatus = async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const status: string = req.body.status;
 
-    await Task.updateOne({ _id: id }, { status: status })
+    await Task.updateOne({ _id: id }, { status: status });
 
     res.json({
       code: 200,
-      message: "Cap nhat trang thai thanh cong!"
-    })
+      message: "Cap nhat trang thai thanh cong!",
+    });
   } catch (error) {
     res.json({
       code: 400,
-      message: "Khong ton tai!"
-    })
+      message: "Khong ton tai!",
+    });
   }
-}
+};
 
 // [PATCH] /api/v1/tasks/changeMulti
 export const changeMulti = async (req: Request, res: Response) => {
@@ -107,47 +107,53 @@ export const changeMulti = async (req: Request, res: Response) => {
     const ids: string[] = req.body.ids;
     const key: string = req.body.key;
     const value: string = req.body.value;
-    
+
     switch (key) {
       case "status":
-        await Task.updateMany({
-          _id: { $in: ids }
-        }, {
-          status: value
-        })
+        await Task.updateMany(
+          {
+            _id: { $in: ids },
+          },
+          {
+            status: value,
+          }
+        );
         res.json({
           code: 200,
-          message: "Cập nhật trạng thái thành công!"
+          message: "Cập nhật trạng thái thành công!",
         });
         break;
 
       case "delete":
-        await Task.updateMany({
-          _id: { $in: ids }
-        }, {
-          deleted: true,
-          deletedAt: new Date()
-        })
+        await Task.updateMany(
+          {
+            _id: { $in: ids },
+          },
+          {
+            deleted: true,
+            deletedAt: new Date(),
+          }
+        );
         res.json({
           code: 200,
-          message: "Xóa thành công!"
+          message: "Xóa thành công!",
         });
         break;
 
       default:
         res.json({
           code: 400,
-          message: "Không tồn tại!"
-        })
+          message: "Không tồn tại!",
+        });
         break;
     }
   } catch (error) {
     res.json({
       code: 400,
-      message: "Khong ton tai!"
-    })
+      message: "Khong ton tai!",
+    });
   }
-}
+};
 
 // [POST] /api/v1/tasks/create
 export const create = async (req: Request, res: Response) => {
@@ -158,31 +164,50 @@ export const create = async (req: Request, res: Response) => {
     res.json({
       code: 200,
       message: "Tao thanh cong",
-      data: data
-    })
+      data: data,
+    });
   } catch (error) {
     res.json({
       code: 400,
-      message: "Khong ton tai!"
-    })
+      message: "Khong ton tai!",
+    });
   }
-}
+};
 
 // [POST] /api/v1/tasks/edit/:id
 export const edit = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
 
-    await Task.updateOne({_id: id}, req.body)
+    await Task.updateOne({ _id: id }, req.body);
 
     res.json({
       code: 200,
       message: "Chinh sua thanh cong",
-    })
+    });
   } catch (error) {
     res.json({
       code: 400,
-      message: "Khong ton tai!"
-    })
+      message: "Khong ton tai!",
+    });
   }
-}
+};
+
+// [DELETE] /api/v1/tasks/delete/:id
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id;
+
+    await Task.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() });
+
+    res.json({
+      code: 200,
+      message: "Xoa thanh cong",
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Khong ton tai!",
+    });
+  }
+};
