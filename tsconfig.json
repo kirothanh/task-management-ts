@@ -3,6 +3,7 @@
     "target": "ES6", // cho phep bien dich code Typescript sang kieu ES6
     "module": "commonjs", // CommonJs la tieu chuan duoc su dung trong NodeJS de lam viec voi cac module
     "removeComments": true, // xoa comments khi bien dich sang file js
-    "esModuleInterop": true // Dung duoc tu khoa import thay cho require
+    "esModuleInterop": true, // Dung duoc tu khoa import thay cho require
+    "outDir": "dist"
   }
 }
